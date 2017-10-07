@@ -19,13 +19,22 @@ public class playerControll : MonoBehaviour {
 
     // Update is called once per frame
     void Update() {
+        changeAnim();
+        }
+
+    void changeAnim()
+    {
         //获取摇杆中心偏移的坐标    
         float joyPositionX = controlETCJoystick.axisX.axisValue;
         float joyPositionY = controlETCJoystick.axisY.axisValue;
+        float xmin = 0.25f;
+        float ymin = 0.25f;
+        float xmax = 3;
+        float ymax = 3;
         //    Debug.Log(joyPositionX+","+ joyPositionY);
 
         //根据滑杆坐标设置动画x,y从-0.75到0.75检测每份长宽0.25 ,-0.75;-0.5;-0.25;0.25;0.5;0.75
-        if (joyPositionX > -0.25 && joyPositionX < 0.25 && joyPositionY > -0.75 && joyPositionY < -0.25)//下
+        if (joyPositionX > -xmin && joyPositionX < xmin && joyPositionY > -ymax && joyPositionY < -ymin)//下
         {
             animator.SetTrigger("d");
             lastStatus = "d";
@@ -36,7 +45,7 @@ public class playerControll : MonoBehaviour {
             //这是通过Translate移动的方法，我们可以看出controlETCJoystick.axisX.axisValue代表X方向的轴向，后者则是Y轴方向
             transform.Translate(new Vector3(controlETCJoystick.axisX.axisValue, controlETCJoystick.axisY.axisValue, 0) * Time.deltaTime * 0.5f, Space.Self);
         }
-        else if (joyPositionX > -0.25 && joyPositionX < 0.25 && joyPositionY > 0.25 && joyPositionY < 0.75)//上
+        else if (joyPositionX > -xmin && joyPositionX < xmin && joyPositionY > ymin && joyPositionY < ymax)//上
         {
             animator.SetTrigger("u");
             lastStatus = "u";
@@ -47,7 +56,7 @@ public class playerControll : MonoBehaviour {
             //这是通过Translate移动的方法，我们可以看出controlETCJoystick.axisX.axisValue代表X方向的轴向，后者则是Y轴方向
             transform.Translate(new Vector3(controlETCJoystick.axisX.axisValue, controlETCJoystick.axisY.axisValue, 0) * Time.deltaTime * 0.5f, Space.Self);
         }
-        else if (joyPositionX > 0.25 && joyPositionX < 0.75 && joyPositionY > -0.25 && joyPositionY < 0.25)//右
+        else if (joyPositionX > xmin && joyPositionX < xmax && joyPositionY > -ymin && joyPositionY < ymin)//右
         {
             animator.SetTrigger("r");
             lastStatus = "r";
@@ -58,7 +67,7 @@ public class playerControll : MonoBehaviour {
             //这是通过Translate移动的方法，我们可以看出controlETCJoystick.axisX.axisValue代表X方向的轴向，后者则是Y轴方向
             transform.Translate(new Vector3(controlETCJoystick.axisX.axisValue, controlETCJoystick.axisY.axisValue, 0) * Time.deltaTime * 0.5f, Space.Self);
         }
-        else if (joyPositionX > -0.75 && joyPositionX < -0.25 && joyPositionY > -0.25 && joyPositionY < 0.25)//左
+        else if (joyPositionX > -xmax && joyPositionX < -xmin && joyPositionY > -ymin && joyPositionY < ymin)//左
         {
             animator.SetTrigger("r");
             lastStatus = "l";
@@ -69,10 +78,52 @@ public class playerControll : MonoBehaviour {
             //这是通过Translate移动的方法，我们可以看出controlETCJoystick.axisX.axisValue代表X方向的轴向，后者则是Y轴方向
             transform.Translate(new Vector3(controlETCJoystick.axisX.axisValue, controlETCJoystick.axisY.axisValue, 0) * Time.deltaTime * 0.5f, Space.Self);
         }
-        else
+        else if (joyPositionX > -xmax && joyPositionX < -xmin && joyPositionY > ymin && joyPositionY < ymax)//左上
         {
-            
-          
+            animator.SetTrigger("ur");
+            lastStatus = "ul";
+            if (!sr.flipX)
+            {
+                sr.flipX = true;
+            }
+            //这是通过Translate移动的方法，我们可以看出controlETCJoystick.axisX.axisValue代表X方向的轴向，后者则是Y轴方向
+            transform.Translate(new Vector3(controlETCJoystick.axisX.axisValue, controlETCJoystick.axisY.axisValue, 0) * Time.deltaTime * 0.5f, Space.Self);
+        }
+        else if (joyPositionX > -xmax && joyPositionX < -xmin && joyPositionY > -ymax && joyPositionY < -ymin)//左下
+        {
+            animator.SetTrigger("dr");
+            lastStatus = "dl";
+            if (!sr.flipX)
+            {
+                sr.flipX = true;
+            }
+            //这是通过Translate移动的方法，我们可以看出controlETCJoystick.axisX.axisValue代表X方向的轴向，后者则是Y轴方向
+            transform.Translate(new Vector3(controlETCJoystick.axisX.axisValue, controlETCJoystick.axisY.axisValue, 0) * Time.deltaTime * 0.5f, Space.Self);
+        }
+        else if (joyPositionX > xmin && joyPositionX < xmax && joyPositionY > -ymax && joyPositionY < -ymin)//右下
+        {
+            animator.SetTrigger("dr");
+            lastStatus = "dr";
+            if (sr.flipX)
+            {
+                sr.flipX = false;
+            }
+            //这是通过Translate移动的方法，我们可以看出controlETCJoystick.axisX.axisValue代表X方向的轴向，后者则是Y轴方向
+            transform.Translate(new Vector3(controlETCJoystick.axisX.axisValue, controlETCJoystick.axisY.axisValue, 0) * Time.deltaTime * 0.5f, Space.Self);
+        }
+        else if (joyPositionX > xmin && joyPositionX < xmax && joyPositionY > ymin && joyPositionY < ymax)//右上
+        {
+
+            animator.SetTrigger("ur");
+            lastStatus = "ur";
+            if (sr.flipX)
+            {
+                sr.flipX = false;
+            }
+            //这是通过Translate移动的方法，我们可以看出controlETCJoystick.axisX.axisValue代表X方向的轴向，后者则是Y轴方向
+            transform.Translate(new Vector3(controlETCJoystick.axisX.axisValue, controlETCJoystick.axisY.axisValue, 0) * Time.deltaTime * 0.5f, Space.Self);
+        }
+        else {
             switch (lastStatus)
             {
                 case "d":
@@ -104,13 +155,40 @@ public class playerControll : MonoBehaviour {
                         sr.flipX = true;
                     }
                     break;
+                case "dr":
+                    animator.SetTrigger("drIdle");
+                    if (sr.flipX)
+                    {
+                        sr.flipX = false;
+                    }
+                    break;
+                case "ur":
+                    animator.SetTrigger("urIdle");
+                    if (sr.flipX)
+                    {
+                        sr.flipX = false;
+                    }
+                    break;
+                case "dl":
+                    animator.SetTrigger("drIdle");
+                    if (!sr.flipX)
+                    {
+                        sr.flipX = true;
+                    }
+                    break;
+                case "ul":
+                    animator.SetTrigger("urIdle");
+                    if (!sr.flipX)
+                    {
+                        sr.flipX = true;
+                    }
+                    break;
                 default:
 
                     break;
             }
         }
-
-
+       
         //float currentAngle = CalculaAngle(joyPositionX, joyPositionY);
         //Debug.Log(currentAngle);
         //if (currentAngle==90)
@@ -203,8 +281,8 @@ public class playerControll : MonoBehaviour {
     }
     public void joyStickEventEnd()
     {
-     
-}
+      
+    }
 
     /// 计算摇杆角度 <summary>
       /// 计算摇杆角度
