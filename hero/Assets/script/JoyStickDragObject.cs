@@ -5,8 +5,8 @@ public class JoyStickDragObject : MonoBehaviour
 {
     public Transform target;
     public Transform targetParent;
-    public float parentWidthRadiu=392;
-    public float parentHeightRadiu= 344;
+    public float parentWidthRadiu=196;
+    public float parentHeightRadiu= 172;
     Vector3 mTargetPos;                                         // 目标当前位置
     Vector3 mLastPos;
 
@@ -35,7 +35,7 @@ public class JoyStickDragObject : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-       
+      
     }
 
     void OnPress(bool pressed)
@@ -78,17 +78,42 @@ public class JoyStickDragObject : MonoBehaviour
             offset = Vector3.zero;
         }
 
-       // Debug.Log("offset: " + offset + " OffsetFromOrigin: " + OffsetFromOrigin);
-        Move(offset);
+        // Debug.Log("offset: " + offset + " OffsetFromOrigin: " + OffsetFromOrigin);
+        
+            Move(offset);
+        
+       
     }
+    void OnDragEnd()
+    {
+        Debug.Log("dragend");
+        checkPositionLimit();
 
+    }
   
     void Move(Vector3 moveDelta)
     {
         mTargetPos += moveDelta;
-
-        target.position = mTargetPos;
-        checkPositionLimit();
+        if (target.transform.position.x > targetParent.transform.position.x + parentWidthRadiu)
+        {
+            target.transform.SetPositionAndRotation(targetParent.position, Quaternion.identity);
+        }
+       else  if (target.transform.position.x < targetParent.transform.position.x - parentWidthRadiu)
+        {
+            target.transform.SetPositionAndRotation(targetParent.position, Quaternion.identity);
+        }
+       else if (target.transform.position.y > targetParent.transform.position.y + parentHeightRadiu)
+        {
+            target.transform.SetPositionAndRotation(targetParent.position, Quaternion.identity);
+        }
+        else if (target.transform.position.y < targetParent.transform.position.y - parentHeightRadiu)
+        {
+            target.transform.SetPositionAndRotation(targetParent.position, Quaternion.identity);
+        }
+        else
+        {
+            target.position = mTargetPos;
+        }
       //  Debug.Log("mTargetPos: " + mTargetPos );
     }
 
@@ -113,39 +138,57 @@ public class JoyStickDragObject : MonoBehaviour
     /// 限制内部
     void checkPositionLimit()
     {
-        if (target.transform.position.x > target.transform.position.x + parentWidthRadiu)
-        {
-            target.transform.SetPositionAndRotation(new Vector3(target.transform.position.x + parentWidthRadiu, target.transform.position.y, 0), Quaternion.identity);
-
-        }
-        if (target.transform.position.x > target.transform.position.x - parentWidthRadiu)
-        {
-            target.transform.SetPositionAndRotation(new Vector3(target.transform.position.x - parentWidthRadiu, target.transform.position.y, 0), Quaternion.identity);
-        }
-        if (target.transform.position.y > target.transform.position.y + parentHeightRadiu)
-        {
-            target.transform.SetPositionAndRotation(new Vector3(target.transform.position.x, target.transform.position.y + parentHeightRadiu, 0), Quaternion.identity);
-        }
-        if (target.transform.position.y > target.transform.position.y - parentHeightRadiu)
-        {
-            target.transform.SetPositionAndRotation(new Vector3(target.transform.position.x, target.transform.position.y - parentHeightRadiu, 0), Quaternion.identity);
-        }
         //if (target.transform.position.x > target.transform.position.x + parentWidthRadiu)
         //{
-        //    target.transform.SetPositionAndRotation(targetParent.position, Quaternion.identity);
+        //    target.transform.SetPositionAndRotation(new Vector3(target.transform.position.x + parentWidthRadiu, target.transform.position.y, 0), Quaternion.identity);
 
         //}
         //if (target.transform.position.x > target.transform.position.x - parentWidthRadiu)
         //{
-        //    target.transform.SetPositionAndRotation(targetParent.position, Quaternion.identity);
+        //    target.transform.SetPositionAndRotation(new Vector3(target.transform.position.x - parentWidthRadiu, target.transform.position.y, 0), Quaternion.identity);
         //}
         //if (target.transform.position.y > target.transform.position.y + parentHeightRadiu)
         //{
-        //    target.transform.SetPositionAndRotation(targetParent.position, Quaternion.identity);
+        //    target.transform.SetPositionAndRotation(new Vector3(target.transform.position.x, target.transform.position.y + parentHeightRadiu, 0), Quaternion.identity);
         //}
         //if (target.transform.position.y > target.transform.position.y - parentHeightRadiu)
         //{
-        //    target.transform.SetPositionAndRotation(targetParent.position, Quaternion.identity);
+        //    target.transform.SetPositionAndRotation(new Vector3(target.transform.position.x, target.transform.position.y - parentHeightRadiu, 0), Quaternion.identity);
         //}
+        if (target.transform.position.x > targetParent.transform.position.x + parentWidthRadiu)
+        {
+            target.transform.SetPositionAndRotation(targetParent.position, Quaternion.identity);
+        }
+        if (target.transform.position.x < targetParent.transform.position.x - parentWidthRadiu)
+        {
+            target.transform.SetPositionAndRotation(targetParent.position, Quaternion.identity);
+        }
+        if (target.transform.position.y > targetParent.transform.position.y + parentHeightRadiu)
+        {
+            target.transform.SetPositionAndRotation(targetParent.position, Quaternion.identity);
+        }
+        if (target.transform.position.y < targetParent.transform.position.y - parentHeightRadiu)
+        {
+            target.transform.SetPositionAndRotation(targetParent.position, Quaternion.identity);
+        }
+
+        //if (target.transform.position.x > targetParent.transform.position.x + parentWidthRadiu)
+        //{
+        //    return false;
+
+        //}
+        //if (target.transform.position.x > targetParent.transform.position.x - parentWidthRadiu)
+        //{
+        //    return false;
+        //}
+        //if (target.transform.position.y > targetParent.transform.position.y + parentHeightRadiu)
+        //{
+        //    return false;
+        //}
+        //if (target.transform.position.y > targetParent.transform.position.y - parentHeightRadiu)
+        //{
+        //    return false;
+        //}
+        //return true;
     }
 }
